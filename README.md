@@ -1,4 +1,5 @@
 ﻿# Overheid Bekendmakingen Sensor - Home Assistant Integratie
+BUG - ERROR in Sensor.py, not stable at this moment.
 
 Deze integratie haalt lokaal relevante overheidsbekendmakingen op en toont deze als sensor in Home Assistant. De bekendmakingen worden opgehaald van [Officiële Bekendmakingen](https://www.officielebekendmakingen.nl), zoals bouwvergunningen, verkeersbesluiten en andere gemeentelijke meldingen.
 
