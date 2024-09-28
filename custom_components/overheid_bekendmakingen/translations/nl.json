@@ -5,7 +5,7 @@
         "title": "Configureer Overheid Bekendmakingen",
         "description": "Stel de Overheid Bekendmakingen integratie in.",
         "data": {
-          "manual_coordinates": "Handmatige Co�rdinaten",
+          "manual_coordinates": "Handmatige Coördinaten",
           "latitude": "Breedtegraad",
           "longitude": "Lengtegraad",
           "range_km": "Bereik (km)",
@@ -15,7 +15,7 @@
       }
     },
     "error": {
-      "invalid_coordinates": "Ongeldige co�rdinaten"
+      "invalid_coordinates": "Ongeldige coördinaten"
     }
   }
 }
