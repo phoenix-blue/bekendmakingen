@@ -159,7 +159,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     name = entry.data.get("name", "Overheid bekendmakingen")
     latitude = entry.data.get("latitude", hass.config.latitude)
     longitude = entry.data.get("longitude", hass.config.longitude)
-    range_km = entry.data.get("range_km", 3)  # Default range in kilometers is now 3
+    range_km = entry.data.get("range_km", 3.0)  # Default range in kilometers is now 3
     interval = entry.data.get("update_interval_hours", 12) * 3600  # Convert to seconds
     debug = entry.data.get("debug", False)  # Get the debug option
 
