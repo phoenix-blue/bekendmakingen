@@ -188,3 +188,4 @@ async def async_setup_entry(hass, entry, async_add_entities):
         sensor.update()
 
     hass.services.async_register(DOMAIN, "manual_refresh", handle_manual_refresh)
+device_registry = await async_get_device_registry(hass)
