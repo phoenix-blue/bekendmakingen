@@ -1,0 +1,14 @@
+{
+  "domain": "overheid_bekendmakingen",
+  "name": "Overheid bekendmakingen",
+  "documentation": "https://github.com/phoenix-blue/bekendmakingen",
+  "requirements": [ "requests" ],
+  "dependencies": [],
+  "version": "2024.9.30",
+  "config_flow": true,
+  "codeowners": [ "@phoenix-blue" ],
+  "iot_class": "cloud_polling",
+  "integration_type": "service",
+  "is_built_in": false,
+  "translations": [ "en", "nl" ]
+}

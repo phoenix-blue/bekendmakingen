@@ -1,0 +1,20 @@
+{
+  "title": "Overheid bekendmakingen",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configureer Overheid bekendmakingen",
+        "description": "Voer de gegevens in om bekendmakingen van de overheid te configureren.",
+        "data": {
+          "latitude": "Breedtegraad",
+          "longitude": "Lengtegraad",
+          "range_km": "Bereik in kilometers",
+          "update_interval": "Update-interval (in seconden)"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Ongeldige authenticatie"
+    }
+  }
+}
