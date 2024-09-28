@@ -4,7 +4,7 @@
   "documentation": "https://github.com/phoenix-blue/bekendmakingen",
   "requirements": [ "requests" ],
   "dependencies": [],
-  "version": "2024.9.30.2",
+  "version": "2024.9.29",
   "config_flow": true,
   "codeowners": [ "@phoenix-blue" ],
   "iot_class": "cloud_polling",
