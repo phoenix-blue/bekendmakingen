@@ -1,4 +1,14 @@
 import requests
+    async def register_device(hass, entry, name, unique_id):
+        """Register the device in the device registry."""
+        device_registry = async_get_device_registry(hass)  # Verwijder 'await' hier
+        device_registry.async_get_or_create(
+            config_entry_id=entry.entry_id,
+            identifiers={(DOMAIN, unique_id)},
+            name=name,
+            manufacturer="Overheid",
+            model="Bekendmakingen Sensor",
+        )
 import xml.etree.ElementTree as ET
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.device_registry import async_get as async_get_device_registry
