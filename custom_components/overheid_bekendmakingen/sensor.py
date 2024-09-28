@@ -14,10 +14,10 @@ class BekendmakingenSensor(Entity):
     def __init__(self, hass, name, latitude, longitude, range_km, interval_hours, unique_id=None, debug=False):
         self._name = name
         self._state = None
-        self._latitude = latitude
-        self._longitude = longitude
-        self._range_km = range_km  # Range in kilometers
-        self._interval = interval_hours * 3600  # Convert hours to seconds
+        self._latitude = float(latitude)
+        self._longitude = float(longitude)
+        self._range_km = float(range_km)  # Range in kilometers
+        self._interval = float(interval_hours) * 3600  # Convert hours to seconds
         self._data = []
         self.hass = hass
         self._unique_id = unique_id  # Add unique ID for the entity
@@ -174,6 +174,17 @@ async def async_setup_entry(hass, entry, async_add_entities):
     async_add_entities([sensor, latest_title_sensor, latest_url_sensor], update_before_add=True)
 
     # Register the device
+    await register_device(hass, entry, name, unique_id)
+
+    # Create a service for manual refresh
+    async def handle_manual_refresh(call):
+        sensor.update()
+
+    hass.services.async_register(DOMAIN, "manual_refresh", handle_manual_refresh)
+
+
+async def register_device(hass, entry, name, unique_id):
+    """Register the device in the device registry."""
     device_registry = await async_get_device_registry(hass)
     device_registry.async_get_or_create(
         config_entry_id=entry.entry_id,
@@ -182,10 +193,3 @@ async def async_setup_entry(hass, entry, async_add_entities):
         manufacturer="Overheid",
         model="Bekendmakingen Sensor",
     )
-
-    # Create a service for manual refresh
-    async def handle_manual_refresh(call):
-        sensor.update()
-
-    hass.services.async_register(DOMAIN, "manual_refresh", handle_manual_refresh)
-device_registry = await async_get_device_registry(hass)
