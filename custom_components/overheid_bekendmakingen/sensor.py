@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.device_registry import async_get as async_get_device_registry
 import logging
+import asyncio
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -70,12 +71,12 @@ class BekendmakingenSensor(Entity):
 
     def update(self):
         """Fetch new data for the sensor."""
-        url = f'https://repository.overheid.nl/sru?query=c.product-area=="lokalebekendmakingen" AND w.locatiepunt within/etrs89 "{self._latitude} {self._longitude} {self._range_km}"'
+        url = f'https://repository.overheid.nl/frbr/lokalebekendmakingen/a400441bb3d36cd1c9f88d0ea4f448ab/1/metadata/metadata.xml'
         if self._debug:
             _LOGGER.debug(f'Fetching data from {url}')
 
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=10)
             if self._debug:
                 _LOGGER.debug(f'Response status code: {response.status_code}')
             if response.status_code == 200:
@@ -89,21 +90,22 @@ class BekendmakingenSensor(Entity):
                     })
             else:
                 _LOGGER.error(f'Error fetching data: {response.status_code}')
-        except Exception as e:
+        except requests.exceptions.RequestException as e:
             _LOGGER.error(f'Failed to fetch data: {e}')
 
     def parse_response(self, xml_data):
         """Parse the XML response and return unique records."""
         records = []
         tree = ET.fromstring(xml_data)
-        sru_records = tree.findall('.//sru:record', namespaces={'sru': 'http://docs.oasis-open.org/ns/search-ws/sruResponse'})
+        ns = {'overheidbm': 'http://standaarden.overheid.nl/bm/terms/', 'dcterms': 'http://purl.org/dc/terms/'}
+        sru_records = tree.findall('.//overheidbm:bekendmakingdocument', namespaces=ns)
         seen = set()
 
         for record in sru_records:
-            identifier = record.find('.//dcterms:identifier', namespaces={'dcterms': 'http://purl.org/dc/terms/'}).text
+            identifier = record.find('.//dcterms:identifier', namespaces=ns).text
             if identifier not in seen:
-                title = record.find('.//dcterms:title', namespaces={'dcterms': 'http://purl.org/dc/terms/'}).text
-                url = record.find('.//gzd:url', namespaces={'gzd': 'http://standaarden.overheid.nl/sru'}).text
+                title = record.find('.//dcterms:title', namespaces=ns).text
+                url = identifier  # Use the identifier as the URL
                 records.append({'title': title, 'url': url})
                 seen.add(identifier)
 
@@ -157,7 +159,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     name = entry.data.get("name", "Overheid bekendmakingen")
     latitude = entry.data.get("latitude", hass.config.latitude)
     longitude = entry.data.get("longitude", hass.config.longitude)
-    range_km = entry.data.get("range_km", 3.0)  # Range in kilometers
+    range_km = entry.data.get("range_km", 3)  # Default range in kilometers is now 3
     interval = entry.data.get("update_interval_hours", 12) * 3600  # Convert to seconds
     debug = entry.data.get("debug", False)  # Get the debug option
 
@@ -178,7 +180,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     # Create a service for manual refresh
     async def handle_manual_refresh(call):
-        sensor.update()
+        await hass.async_add_executor_job(sensor.update)
 
     hass.services.async_register(DOMAIN, "manual_refresh", handle_manual_refresh)
 
