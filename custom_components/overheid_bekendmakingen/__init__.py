@@ -1,15 +1,20 @@
-DOMAIN = "overheid_bekendmakingen"
+from homeassistant.core import HomeAssistant
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers.typing import ConfigType
+
+from .const import DOMAIN
+
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Set up the Overheid Bekendmakingen component."""
+    hass.data[DOMAIN] = {}
+    return True
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Overheid Bekendmakingen from a config entry."""
-    try:
-        hass.data.setdefault(DOMAIN, {})
-        hass.data[DOMAIN][entry.entry_id] = entry.data
+    hass.data[DOMAIN][entry.entry_id] = entry.data
+    return True
 
-        # Add sensor or other entity
-        await hass.config_entries.async_forward_entry_setup(entry, "sensor")
-        return True
-    except Exception as e:
-        # Log the error for debugging
-        hass.logger.error(f"Error setting up entry for {DOMAIN}: {e}")
-        return False
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Unload a config entry."""
+    hass.data[DOMAIN].pop(entry.entry_id)
+    return True

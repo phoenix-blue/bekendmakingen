@@ -13,23 +13,12 @@ Deze integratie haalt lokaal relevante overheidsbekendmakingen op en toont deze 
 
 ## Installatie
 
-1. ** Installatie via HACS (aanbevolen):**
+### Manuele installatie:
 
-Open je Home Assistant instance en open een repository in de Home Assistant Community Store.
-
-[![Open je Home Assistant instance en toon het dialoogvenster om een repository toe te voegen met een vooraf ingevulde URL.](https://camo.githubusercontent.com/8cec5af6ba93659beb5352741334ef3bbee70c4cb725f20832a1b897dfb8fc5f/68747470733a2f2f6d792e686f6d652d617373697374616e742e696f2f6261646765732f686163735f7265706f7369746f72792e737667)](https://my.home-assistant.io/redirect/hacs_repository/?owner=phoenix-blue&repository=bekendmakingen)
-
-1. Gebruik de custom repo link: `https://github.com/phoenix-blue/bekendmakingen`
-2. Selecteer het categorietype: Integratie
-3. Zodra het daar is (nog steeds in HACS), klik op de INSTALL-knop
-4. Herstart Home Assistant
-5. Na het herstarten, ga in de HA UI naar Configuratie (het ⚙️ linksonder) -> Apparaten en Diensten, klik op + Integratie toevoegen en zoek naar "Overheid Bekendmakingen"
-
-2. **Manuele installatie:**
-   - Download de laatste release van de repository.
-   - Kopieer de map `overheid_bekendmakingen` naar je Home Assistant `custom_components` directory.
-   - Start Home Assistant opnieuw op.
-   - Voeg de integratie toe via de UI: *Instellingen* > *Apparaten & Services* > *Integraties* > *Toevoegen* > zoek op "Overheid Bekendmakingen".
+1. Download de laatste release van de repository.
+2. Kopieer de map `overheid_bekendmakingen` naar je Home Assistant `custom_components` directory.
+3. Start Home Assistant opnieuw op.
+4. Voeg de integratie toe via de UI: *Instellingen* > *Apparaten & Services* > *Integraties* > *Toevoegen* > zoek op "Overheid Bekendmakingen".
 
 ## Configuratie
 
@@ -46,12 +35,12 @@ De sensor toont de volgende gegevens:
 
 | Attribuut         | Beschrijving                                 |
 | ----------------- | -------------------------------------------- |
-| `state`           | Titel van de laatste bekende bekendmaking     |
-| `latest_title`    | Titel van de nieuwste bekendmaking            |
-| `latest_url`      | URL naar de bekendmaking                      |
-| `latitude`        | Gebruikte latitude voor de zoekopdracht       |
-| `longitude`       | Gebruikte longitude voor de zoekopdracht      |
-| `range_km`        | Radius voor de zoekopdracht                   |
+| `state`           | Titel van de laatste bekende bekendmaking    |
+| `latest_title`    | Titel van de nieuwste bekendmaking           |
+| `latest_url`      | URL naar de bekendmaking                     |
+| `latitude`        | Gebruikte latitude voor de zoekopdracht      |
+| `longitude`       | Gebruikte longitude voor de zoekopdracht     |
+| `range_km`        | Radius voor de zoekopdracht                  |
 
 ## To Do
 
@@ -87,23 +76,12 @@ This integration fetches locally relevant government announcements and displays 
 
 ## Installation
 
-1. ** Installation via HACS (recommended): **
+### Manual Installation:
 
-Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.
-
-[![Open your Home Assistant instance and show the add repository dialog with a specific repository URL pre-filled.](https://camo.githubusercontent.com/8cec5af6ba93659beb5352741334ef3bbee70c4cb725f20832a1b897dfb8fc5f/68747470733a2f2f6d792e686f6d652d617373697374616e742e696f2f6261646765732f686163735f7265706f7369746f72792e737667)](https://my.home-assistant.io/redirect/hacs_repository/?owner=phoenix-blue&repository=bekendmakingen)
-
-1. Use the custom repo link: `https://github.com/phoenix-blue/bekendmakingen`
-2. Select the category type: Integration
-3. Once it's there (still in HACS), click the INSTALL button
-4. Restart Home Assistant
-5. Once restarted, in the HA UI go to Configuration (the ⚙️ in the lower left) -> Devices and Services, click + Add Integration and search for "Overheid Bekendmakingen"
-
-2. **Manual Installation:**
-   - Download the latest release from the repository.
-   - Copy the `overheid_bekendmakingen` folder to your Home Assistant `custom_components` directory.
-   - Restart Home Assistant.
-   - Add the integration via the UI: *Settings* > *Devices & Services* > *Integrations* > *Add* > search for "Overheid Bekendmakingen".
+1. Download the latest release from the repository.
+2. Copy the `overheid_bekendmakingen` folder to your Home Assistant `custom_components` directory.
+3. Restart Home Assistant.
+4. Add the integration via the UI: *Settings* > *Devices & Services* > *Integrations* > *Add* > search for "Overheid Bekendmakingen".
 
 ## Configuration
 
