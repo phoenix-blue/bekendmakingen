@@ -13,11 +13,9 @@ Deze integratie haalt lokaal relevante overheidsbekendmakingen op en toont deze 
 
 ## Installatie
 
-1. ** Installatie via HACS (aanbevolen):**
+1. **Installatie via HACS (aanbevolen):**
 
 Open je Home Assistant instance en open een repository in de Home Assistant Community Store.
-
-[![Open je Home Assistant instance en toon het dialoogvenster om een repository toe te voegen met een vooraf ingevulde URL.](https://camo.githubusercontent.com/8cec5af6ba93659beb5352741334ef3bbee70c4cb725f20832a1b897dfb8fc5f/68747470733a2f2f6d792e686f6d652d617373697374616e742e696f2f6261646765732f686163735f7265706f7369746f72792e737667)](https://my.home-assistant.io/redirect/hacs_repository/?owner=phoenix-blue&repository=bekendmakingen)
 
 1. Gebruik de custom repo link: `https://github.com/phoenix-blue/bekendmakingen`
 2. Selecteer het categorietype: Integratie
@@ -87,11 +85,9 @@ This integration fetches locally relevant government announcements and displays 
 
 ## Installation
 
-1. ** Installation via HACS (recommended): **
+1. **Installation via HACS (recommended):**
 
 Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.
-
-[![Open your Home Assistant instance and show the add repository dialog with a specific repository URL pre-filled.](https://camo.githubusercontent.com/8cec5af6ba93659beb5352741334ef3bbee70c4cb725f20832a1b897dfb8fc5f/68747470733a2f2f6d792e686f6d652d617373697374616e742e696f2f6261646765732f686163735f7265706f7369746f72792e737667)](https://my.home-assistant.io/redirect/hacs_repository/?owner=phoenix-blue&repository=bekendmakingen)
 
 1. Use the custom repo link: `https://github.com/phoenix-blue/bekendmakingen`
 2. Select the category type: Integration
