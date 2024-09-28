@@ -1,7 +1,7 @@
 import requests
 import xml.etree.ElementTree as ET
 from homeassistant.helpers.entity import Entity
-from homeassistant.helpers.device_registry import async_get_registry as async_get_device_registry
+from homeassistant.helpers.device_registry import async_get as async_get_device_registry
 import logging
 
 _LOGGER = logging.getLogger(__name__)
