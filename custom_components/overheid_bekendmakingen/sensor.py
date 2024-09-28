@@ -1,6 +1,7 @@
 import requests
 import xml.etree.ElementTree as ET
 from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.device_registry import async_get_registry as async_get_device_registry
 import logging
 
 _LOGGER = logging.getLogger(__name__)
@@ -171,6 +172,16 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     # Add the sensors
     async_add_entities([sensor, latest_title_sensor, latest_url_sensor], update_before_add=True)
+
+    # Register the device
+    device_registry = await async_get_device_registry(hass)
+    device_registry.async_get_or_create(
+        config_entry_id=entry.entry_id,
+        identifiers={(DOMAIN, unique_id)},
+        name=name,
+        manufacturer="Overheid",
+        model="Bekendmakingen Sensor",
+    )
 
     # Create a service for manual refresh
     async def handle_manual_refresh(call):
