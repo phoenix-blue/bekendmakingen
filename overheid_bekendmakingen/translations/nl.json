@@ -1,0 +1,22 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configureer Overheid Bekendmakingen",
+        "description": "Stel de Overheid Bekendmakingen integratie in.",
+        "data": {
+          "manual_coordinates": "Handmatige Coördinaten",
+          "latitude": "Breedtegraad",
+          "longitude": "Lengtegraad",
+          "range_km": "Bereik (km)",
+          "update_interval_hours": "Update-interval (uren)",
+          "debug": "Debugging inschakelen"
+        }
+      }
+    },
+    "error": {
+      "invalid_coordinates": "Ongeldige coördinaten"
+    }
+  }
+}
+
