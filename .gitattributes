@@ -1,9 +1,0 @@
-# .gitattributes
-
-# Zorg ervoor dat tekstbestanden de juiste line endings hebben
-* text=auto
-
-# Markeer bepaalde bestanden als binair
-*.png binary
-*.jpg binary
-*.pdf binary
