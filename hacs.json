@@ -1,7 +1,10 @@
 {
   "name": "Overheid Bekendmakingen",
   "content_in_root": false,
-  "domains": [ "sensor" ],
-  "country": "NL",
-  "render_readme": true
+  "country": ["NL"],
+  "domains": ["sensor"],
+  "homeassistant": "2024.1.0",
+  "render_readme": true,
+  "zip_release": false,
+  "filename": "overheid_bekendmakingen.zip"
 }

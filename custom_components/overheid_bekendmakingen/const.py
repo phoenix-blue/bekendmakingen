@@ -1,2 +1,0 @@
-DOMAIN = "overheid_bekendmakingen"
-

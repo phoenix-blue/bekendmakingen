@@ -1,0 +1,1 @@
+https://developers.home-assistant.io/docs/creating_component_index/

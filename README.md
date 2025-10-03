@@ -1,66 +1,137 @@
-﻿# Overheid Bekendmakingen Sensor - Home Assistant Integratie
+﻿# Overheid Bekendmakingen voor Home Assistant
 
-Deze integratie haalt lokaal relevante overheidsbekendmakingen op en toont deze als sensor in Home Assistant. De bekendmakingen worden opgehaald van [Officiële Bekendmakingen](https://www.officielebekendmakingen.nl), zoals bouwvergunningen, verkeersbesluiten en andere gemeentelijke meldingen.
+[![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
+[![GitHub Release](https://img.shields.io/github/release/phoenix-blue/bekendmakingen.svg)](https://github.com/phoenix-blue/bekendmakingen/releases)
+[![License](https://img.shields.io/github/license/phoenix-blue/bekendmakingen.svg)](LICENSE)
 
-## Functies
+**Nederlandse overheidsbekendmakingen direct in je Home Assistant!**
 
-- Ophalen van overheidsbekendmakingen op basis van GPS-locatie.
-- Weergave van de laatste bekende bekendmaking, bijbehorende URL en timestamp.
-- Extra informatie zoals latitude, longitude en de radius van de zoekopdracht.
-- Automatische intervalconfiguratie.
-- Mogelijkheid om handmatig te verversen via een service.
-- Volledige configuratie via de UI, geen `configuration.yaml` nodig.
+Deze integratie toont lokale bekendmakingen van de Nederlandse overheid als sensoren in Home Assistant. Bekendmakingen verschijnen ook als **oranje balletjes op de kaart** zodat je precies kunt zien waar ze zich bevinden.
 
-## Installatie
+## 🎯 Wat doet deze integratie?
 
-### Manuele installatie:
+- **📍 Kaartweergave**: Bekendmakingen verschijnen als oranje balletjes op je Home Assistant kaart
+- **📊 Sensor**: Tekstsensor met details van de laatste bekendmaking  
+- **🔔 Meldingen**: Automatische notificaties bij nieuwe bekendmakingen in jouw buurt
+- **⚙️ Configureerbaar**: Stel zelf je zoekradius in (100m tot 10km)
 
-1. Download de laatste release van de repository.
-2. Kopieer de map `overheid_bekendmakingen` naar je Home Assistant `custom_components` directory.
-3. Start Home Assistant opnieuw op.
-4. Voeg de integratie toe via de UI: *Instellingen* > *Apparaten & Services* > *Integraties* > *Toevoegen* > zoek op "Overheid Bekendmakingen".
+### Welke bekendmakingen krijg je te zien?
 
-## Configuratie
+- Bouwvergunningen
+- Verkeersbesluiten  
+- Omgevingsvergunningen
+- Bestemmingsplanwijzigingen
+- Gemeentelijke meldingen
+- En nog veel meer overheidszaken
 
-De module configureert zich automatisch via een config flow. Je kunt de volgende instellingen aanpassen:
+## 🚀 Installatie
 
-- **Automatische GPS-locatie:** Laat de integratie automatisch je locatie gebruiken.
-- **Radius:** Stel een radius in voor de zoekopdracht (in kilometers).
-- **Update-interval:** Stel het interval in waarop de bekendmakingen worden opgehaald (in uren).
+### Via HACS (Aanbevolen)
 
-**Opmerking:** De optie voor handmatige GPS-locatie-invoer en debug-optie zijn verwijderd om de integratie eenvoudiger en betrouwbaarder te maken.
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Phoenix-Blue&repository=https%3A%2F%2Fgithub.com%2Fphoenix-blue%2Fbekendmakingen)
 
-## Voorbeeld
+1. Ga naar HACS in je Home Assistant
+2. Klik op "Integrations"
+3. Klik op de drie puntjes rechtsboven
+4. Selecteer "Custom repositories" 
+5. Voeg deze URL toe: `https://github.com/phoenix-blue/bekendmakingen`
+6. Categorie: "Integration"
+7. Zoek naar "Overheid Bekendmakingen" en installeer
+8. Herstart Home Assistant
 
-De sensor toont de volgende gegevens:
+### Handmatige installatie
 
-| Attribuut         | Beschrijving                                  |
-| ----------------- | --------------------------------------------- |
-| `state`           | Timestamp van de laatste bekende bekendmaking  |
-| `latest_title`    | Titel van de nieuwste bekendmaking            |
-| `latest_url`      | URL naar de bekendmaking                      |
-| `latitude`        | Gebruikte latitude voor de zoekopdracht       |
-| `longitude`       | Gebruikte longitude voor de zoekopdracht      |
-| `range_km`        | Radius voor de zoekopdracht                   |
+1. Download de `overheid_bekendmakingen` map naar je `custom_components` directory
+2. Herstart Home Assistant
+3. Ga naar Instellingen → Apparaten & Services → Integraties
+4. Klik "Toevoegen" en zoek "Overheid Bekendmakingen"
 
-## Gebruik
+## ⚙️ Configuratie
 
-- **Handmatige verversing:** Gebruik de `manual_refresh` service om de bekendmakingen handmatig te verversen.
-- **Automatische updates:** Bekendmakingen worden automatisch opgehaald op basis van het ingestelde interval.
+Na installatie configureer je de integratie via de Home Assistant interface:
 
-## To Do
+| Instelling | Beschrijving | Standaard |
+|------------|--------------|-----------|
+| **Automatische locatie** | Gebruik je HA locatie | Aan |
+| **Handmatige coördinaten** | Voer eigen locatie in | Uit |
+| **Zoekradius** | Afstand in meters | 1000m |
+| **Update interval** | Uren tussen updates | 12 uur |
 
-- Verbeteringen in de integratie voor het ondersteunen van automatiseringen en scripts.
-- Validatie van URL's en foutafhandeling.
-- Weergave van de bekendmakingen op een kaart.
-- Verwijderen van debuglogregels.
+## 📍 Kaart en sensoren
 
-## Bron van gegevens
+### Op de kaart
+- **Oranje balletjes** tonen locaties van bekendmakingen
+- Klik op een balletje voor details
+- Zoom in/uit om meer of minder details te zien
 
-De bekendmakingen worden opgehaald van [Officiële Bekendmakingen](https://www.officielebekendmakingen.nl). Deze data wordt verstrekt onder de **Open Data Licentie Nederland (ODbL)**.
+### Sensor informatie
+```
+sensor.overheid_bekendmakingen
+```
 
-## Licentie
+**Attributen:**
+- `state`: Aantal gevonden bekendmakingen
+- `laatste_titel`: Titel van nieuwste bekendmaking  
+- `laatste_url`: Link naar volledige tekst
+- `laatste_datum`: Publicatiedatum
+- `bekendmakingen`: Lijst met alle gevonden bekendmakingen
+- `breedtegraad` / `lengtegraad`: Gebruikte zoeklocatie
+- `radius_meters`: Gebruikte zoekradius
 
-Deze integratie is gelicentieerd onder de MIT-licentie. Zie het `LICENSE`-bestand voor meer details.
+## 🔔 Automatisering voorbeeld
 
-De data van overheidsbekendmakingen wordt verstrekt onder de **Open Data Licentie Nederland (ODbL)**.
+Krijg een melding bij nieuwe bekendmakingen:
+
+```yaml
+automation:
+  - alias: "Nieuwe bekendmaking in de buurt"
+    trigger:
+      - platform: state
+        entity_id: sensor.overheid_bekendmakingen
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state|int > trigger.from_state.state|int }}"
+    action:
+      - service: notify.mobile_app_jouw_telefoon
+        data:
+          title: "🏛️ Nieuwe bekendmaking"
+          message: "{{ state_attr('sensor.overheid_bekendmakingen', 'laatste_titel') }}"
+          data:
+            url: "{{ state_attr('sensor.overheid_bekendmakingen', 'laatste_url') }}"
+```
+
+## 📡 Data bron
+
+Alle informatie komt van [Officiële Bekendmakingen](https://www.officielebekendmakingen.nl):
+- **Realtime**: Direct van overheidsbronnen
+- **Compleet**: Alle Nederlandse gemeenten en overheidsorganisaties  
+- **Betrouwbaar**: Officiële overheids-API
+- **Open data**: Vrij beschikbaar onder ODBL licentie
+
+## 🔧 Probleemoplossing
+
+**Geen bekendmakingen gevonden?**
+- Controleer je coördinaten
+- Vergroot de zoekradius
+- Check je internetverbinding
+
+**Integratie laadt niet?**
+- Home Assistant versie ≥ 2024.1.0 vereist
+- Controleer de logs voor foutmeldingen
+
+**Debug logging inschakelen:**
+```yaml
+logger:
+  logs:
+    custom_components.overheid_bekendmakingen: debug
+```
+
+## 🤝 Bijdragen
+
+Bijdragen zijn welkom! Zie [CONTRIBUTING.md](CONTRIBUTING.md) voor meer informatie.
+
+## 📄 Licentie
+
+MIT License - zie [LICENSE](LICENSE) bestand voor details.
+
+Overheidsdata valt onder de [Open Data Licentie Nederland (ODBL)](https://data.overheid.nl/licenties-voor-hergebruik).
