@@ -16,6 +16,10 @@ from .const import (
     NAME,
     CONF_RADIUS,
     DEFAULT_RADIUS,
+    CONF_MAP_DISPLAY_DAYS,
+    CONF_ARCHIVE_DAYS,
+    DEFAULT_MAP_DISPLAY_DAYS,
+    DEFAULT_ARCHIVE_DAYS,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -102,6 +106,14 @@ class OverheidBekendmakingenOptionsFlow(config_entries.OptionsFlow):
                     "update_interval_hours", 
                     default=self.config_entry.options.get("update_interval_hours", 12)
                 ): vol.All(vol.Coerce(int), vol.Range(min=1, max=24)),
+                vol.Optional(
+                    CONF_MAP_DISPLAY_DAYS,
+                    default=self.config_entry.options.get(CONF_MAP_DISPLAY_DAYS, DEFAULT_MAP_DISPLAY_DAYS)
+                ): vol.All(vol.Coerce(int), vol.Range(min=1, max=365)),
+                vol.Optional(
+                    CONF_ARCHIVE_DAYS,
+                    default=self.config_entry.options.get(CONF_ARCHIVE_DAYS, DEFAULT_ARCHIVE_DAYS)
+                ): vol.All(vol.Coerce(int), vol.Range(min=7, max=365)),
                 vol.Optional(
                     "debug", 
                     default=self.config_entry.options.get("debug", False)

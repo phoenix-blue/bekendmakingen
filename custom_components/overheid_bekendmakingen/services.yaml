@@ -1,0 +1,34 @@
+# Services voor Overheid Bekendmakingen
+manual_refresh:
+  name: Handmatige Verversing
+  description: Ververs de bekendmakingen handmatig
+  
+set_range:
+  name: Zoekbereik Instellen
+  description: Stel het zoekbereik in meters in (100-10000)
+  fields:
+    range_meters:
+      name: Bereik in meters
+      description: Het nieuwe zoekbereik in meters
+      required: true
+      selector:
+        number:
+          min: 100
+          max: 10000
+          step: 100
+          unit_of_measurement: "m"
+
+set_interval:
+  name: Scan Interval Instellen  
+  description: Stel de scan interval in uren in (1-24)
+  fields:
+    interval_hours:
+      name: Interval in uren
+      description: De nieuwe scan interval in uren
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 24
+          step: 1
+          unit_of_measurement: "h"

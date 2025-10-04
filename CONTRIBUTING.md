@@ -1,6 +1,31 @@
-# Contributing to Overheid Bekendmakingen
+# 🤝 Bijdragen aan Overheid Bekendmakingen
 
-Thank you for your interest in contributing to this Home Assistant integration! 
+Bedankt voor je interesse om bij te dragen aan dit project! 
+
+## 🧪 **BETA FEEDBACK - Heel Belangrijk!**
+
+> ⚠️ **Dit is een bètaversie (v2024.10.04.3)** met veel nieuwe functies!  
+> Jouw feedback is **cruciaal** voor een stabiele release.
+
+### 🐛 **Bug Gevonden?**
+1. Controleer [bestaande issues](https://github.com/phoenix-blue/bekendmakingen/issues)
+2. [Open nieuwe issue](https://github.com/phoenix-blue/bekendmakingen/issues/new) met:
+   - Home Assistant versie  
+   - Integratie versie (v2024.10.04.3)
+   - Logs uit Developer Tools
+   - Stappen om te reproduceren
+
+### 💡 **Suggestie of Feature?** 
+- [Start een discussion](https://github.com/phoenix-blue/bekendmakingen/discussions)
+- Beschrijf waarom het nuttig is
+- Community kan meepraten
+
+### ⭐ **Werkt Perfect?**
+- Laat een ⭐ achter op GitHub  
+- Help anderen in discussions
+- Deel ervaring in HA Community
+
+--- 
 
 ## Development Environment
 

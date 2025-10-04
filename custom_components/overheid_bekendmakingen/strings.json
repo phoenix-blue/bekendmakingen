@@ -41,11 +41,15 @@
         "data": {
           "radius": "Zoekradius (meters)",
           "update_interval_hours": "Update-interval (uren)",
+          "map_display_days": "Kaart weergave (dagen)",
+          "archive_days": "Archief bewaren (dagen)",
           "debug": "Debug-modus"
         },
         "data_description": {
           "radius": "Afstand in meters rondom je locatie (100-10000).",
           "update_interval_hours": "Hoe vaak bijwerken (1-24 uur).",
+          "map_display_days": "Hoeveel dagen bekendmakingen op de kaart tonen (1-365).",
+          "archive_days": "Hoeveel dagen bekendmakingen bewaren in archief (7-365).",
           "debug": "Debug-logging aan of uit."
         }
       }
