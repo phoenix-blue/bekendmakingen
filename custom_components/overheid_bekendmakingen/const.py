@@ -2,7 +2,7 @@
 
 DOMAIN = "overheid_bekendmakingen"
 NAME = "Overheid Bekendmakingen"
-VERSION = "2024.10.04.3"
+VERSION = "2024.10.04.4"
 
 # Configuratie sleutels
 CONF_LATITUDE = "latitude"

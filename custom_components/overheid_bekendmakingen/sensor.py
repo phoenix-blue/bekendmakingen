@@ -2,8 +2,6 @@ import requests
 import xml.etree.ElementTree as ET
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.device_registry import async_get as async_get_device_registry
-from homeassistant.components.input_number import InputNumberEntity
-from homeassistant.components.input_text import InputTextEntity
 import logging
 import asyncio
 from urllib.parse import urlencode
@@ -113,7 +111,7 @@ class BekendmakingenSensor(Entity):
             "name": "Overheid Bekendmakingen",
             "manufacturer": "Overheid.nl",
             "model": "Lokale Bekendmakingen Sensor",
-            "sw_version": "2024.10.04.3",
+            "sw_version": "2024.10.04.4",
         }
 
     @property

@@ -29,11 +29,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     try:
         # Forward the setup to platforms
-        _LOGGER.debug("Forwarding entry setup to platforms.")
-        await hass.config_entries.async_forward_entry_setups(entry, ["sensor", "geo_location"])
-        _LOGGER.debug("Platforms setup completed.")
+        _LOGGER.debug("Forwarding entry setup to sensor platform.")
+        await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
+        _LOGGER.debug("Sensor platform setup completed.")
+        # TODO: Add geo_location platform in future update
     except Exception as e:
-        _LOGGER.error(f"Error setting up platforms: {e}")
+        _LOGGER.error(f"Error setting up sensor platform: {e}")
         return False
 
     return True
@@ -43,11 +44,11 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     _LOGGER.debug(f"Unloading Overheid Bekendmakingen config entry: {entry.entry_id}")
 
     try:
-        # Forward the unload to platforms
-        _LOGGER.debug("Forwarding entry unload to platforms.")
+        # Forward the unload to sensor platform
+        _LOGGER.debug("Forwarding entry unload to sensor platform.")
         await hass.config_entries.async_forward_entry_unload(entry, "sensor")
-        await hass.config_entries.async_forward_entry_unload(entry, "geo_location")
-        _LOGGER.debug("Platforms unload completed.")
+        _LOGGER.debug("Sensor platform unload completed.")
+        # TODO: Add geo_location unload in future update
     except Exception as e:
         _LOGGER.error(f"Error unloading sensor platform: {e}")
         return False
