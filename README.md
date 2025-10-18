@@ -85,6 +85,13 @@ epository.overheid.nl
 
 Deze integratie is geïnspireerd door het uitstekende werk van [@basgroot](https://github.com/basgroot/bekendmakingen). Veel dank voor de inspiratie en referentie-implementatie.
 
+## TODO / Roadmap
+
+- [ ] Keuze Home Assistant locatie of handmatige locatie verbeteren
+- [ ] Icoontjes maps toewijzen
+- [ ] Uitgebreidere filtering opties toevoegen
+- [ ] Performance optimalisaties voor grote datasets
+
 ## Ondersteuning
 
 Voor vragen, suggesties of problemen:
