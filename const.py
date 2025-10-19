@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 DOMAIN = "overheid_bekendmakingen"
 NAME = "Overheid Bekendmakingen"
-VERSION = "2.0.5"  # Vereenvoudigde config flow
+VERSION = "2.0.7"  # Fixed update interval polling issue
 
 # Configuratie sleutels
 CONF_LATITUDE = "latitude"

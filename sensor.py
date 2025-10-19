@@ -6,6 +6,7 @@ import asyncio
 from datetime import datetime, timedelta
 from urllib.parse import urlencode
 from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt as dt_util
 
 from .const import (
@@ -51,7 +52,17 @@ class BekendmakingenSensor(Entity):
         self._individual_sensors_created = False
         self._async_add_entities = None
 
+        # Create update coordinator with the specified interval
+        self.coordinator = DataUpdateCoordinator(
+            hass,
+            _LOGGER,
+            name=f"{DOMAIN}_{self._name}",
+            update_method=self._async_update_data,
+            update_interval=timedelta(hours=self._interval_hours),
+        )
+
         _LOGGER.info(f"Bekendmakingen Sensor 2.0.1 geinitialiseerd: {self._name}")
+        _LOGGER.info(f"Update interval ingesteld op {self._interval_hours} uur")
         _LOGGER.debug(f"Gemeente: {self._municipality}, Coordinaten: {self._latitude}, {self._longitude}")
 
     @property
@@ -75,6 +86,11 @@ class BekendmakingenSensor(Entity):
     def available(self):
         """Return if entity is available."""
         return self._available
+
+    @property
+    def should_poll(self):
+        """Return False as we handle updates manually via coordinator."""
+        return False
 
     @property
     def extra_state_attributes(self):
@@ -116,14 +132,35 @@ class BekendmakingenSensor(Entity):
             "model": "Bekendmakingen v2.0",
         }
 
-    async def async_update(self):
-        """Update the sensor."""
+    async def _async_update_data(self):
+        """Fetch data from API via coordinator."""
         try:
-            _LOGGER.debug(f"Updating {self._name}")
+            _LOGGER.debug(f"Coordinator updating data for {self._name}")
             await self.hass.async_add_executor_job(self._update_data)
+            return self._data
         except Exception as e:
             _LOGGER.error(f"Error updating {self._name}: {e}")
             self._available = False
+            raise UpdateFailed(f"Error communicating with API: {e}")
+
+    async def async_update(self):
+        """Update the sensor via coordinator."""
+        await self.coordinator.async_request_refresh()
+
+    async def async_added_to_hass(self):
+        """When entity is added to hass."""
+        await super().async_added_to_hass()
+        
+        # Start the coordinator
+        await self.coordinator.async_config_entry_first_refresh()
+        
+        # Register for manual update events
+        self.async_on_remove(
+            self.hass.bus.async_listen("overheid_bekendmakingen_manual_update", self._handle_manual_update)
+        )
+        self.async_on_remove(
+            self.hass.bus.async_listen("overheid_bekendmakingen_refresh_all", self._handle_refresh_all)
+        )
 
     def _update_data(self):
         """Fetch data from the API using working implementation."""
