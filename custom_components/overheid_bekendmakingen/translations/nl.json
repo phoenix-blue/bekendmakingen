@@ -4,9 +4,8 @@
     "step": {
       "user": {
         "title": "Overheid Bekendmakingen instellen", 
-        "description": "Configureer je Nederlandse overheidsbekendmakingen. Standaard wordt je Home Assistant locatie gebruikt, of kies een eigen locatie. Bekendmakingen verschijnen als oranje balletjes op de kaart en als tekstsensor.",
+        "description": "Configureer je Nederlandse overheidsbekendmakingen. Pas de coördinaten aan indien gewenst (standaard wordt je Home Assistant locatie gebruikt). Bekendmakingen verschijnen als oranje balletjes op de kaart en als tekstsensor.",
         "data": {
-          "manual_coordinates": "Eigen locatie instellen",
           "latitude": "Breedtegraad",
           "longitude": "Lengtegraad",
           "radius": "Zoekradius (meters)",
@@ -14,10 +13,9 @@
           "debug": "Debug-modus"
         },
         "data_description": {
-          "manual_coordinates": "Schakel in om een eigen locatie te gebruiken in plaats van je Home Assistant locatie.",
-          "latitude": "Breedtegraad van de locatie (-90 tot 90).",
-          "longitude": "Lengtegraad van de locatie (-180 tot 180).",
-          "radius": "Afstand in meters rondom je locatie om bekendmakingen te zoeken (100-10000).",
+          "latitude": "Breedtegraad van de locatie (-90 tot 90). Standaard wordt je Home Assistant locatie gebruikt.",
+          "longitude": "Lengtegraad van de locatie (-180 tot 180). Standaard wordt je Home Assistant locatie gebruikt.",
+          "radius": "Afstand in meters rondom je locatie om bekendmakingen te zoeken (1000-50000).",
           "update_interval_hours": "Hoe vaak nieuwe bekendmakingen worden opgehaald (1-24 uur).",
           "debug": "Voor probleemoplossing en uitgebreide logging."
         }

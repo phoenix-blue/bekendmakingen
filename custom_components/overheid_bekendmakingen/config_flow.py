@@ -36,20 +36,18 @@ class OverheidBekendmakingenConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
         errors: dict[str, str] = {}
 
         if user_input is not None:
-            # Validate coordinates if manual input is checked
-            manual_coords = user_input.get("manual_coordinates", False)
-            if manual_coords:
-                if not user_input.get("latitude") or not user_input.get("longitude"):
-                    errors["base"] = "invalid_coordinates"
-                else:
-                    # Additional validation for coordinate ranges
-                    try:
-                        lat = float(user_input["latitude"])
-                        lon = float(user_input["longitude"])
-                        if not (-90 <= lat <= 90) or not (-180 <= lon <= 180):
-                            errors["base"] = "invalid_coordinates"
-                    except (ValueError, TypeError):
+            # Validate coordinates
+            if not user_input.get("latitude") or not user_input.get("longitude"):
+                errors["base"] = "invalid_coordinates"
+            else:
+                # Additional validation for coordinate ranges
+                try:
+                    lat = float(user_input["latitude"])
+                    lon = float(user_input["longitude"])
+                    if not (-90 <= lat <= 90) or not (-180 <= lon <= 180):
                         errors["base"] = "invalid_coordinates"
+                except (ValueError, TypeError):
+                    errors["base"] = "invalid_coordinates"
 
             if not errors:
                 return self.async_create_entry(
@@ -64,7 +62,6 @@ class OverheidBekendmakingenConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema({
-                vol.Optional("manual_coordinates", default=False): cv.boolean,
                 vol.Optional("latitude", default=latitude): cv.latitude,
                 vol.Optional("longitude", default=longitude): cv.longitude,
                 vol.Optional(CONF_RADIUS, default=DEFAULT_RADIUS): vol.All(
