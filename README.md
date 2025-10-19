@@ -2,7 +2,7 @@
 
 Een Home Assistant integratie voor het ophalen van officiële bekendmakingen van Nederlandse gemeenten via de overheids-API.
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Phoenix-Blue&repository=bekendmakingen)
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=phoenix-blue&repository=bekendmakingen)
 
 ## Wat doet deze integratie?
 
