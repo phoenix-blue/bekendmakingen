@@ -4,9 +4,8 @@
     "step": {
       "user": {
         "title": "Overheid Bekendmakingen instellen", 
-        "description": "Configureer hoe je Nederlandse overheidsbekendmakingen wilt ontvangen. Bekendmakingen verschijnen als oranje balletjes op de kaart en als tekstsensor.",
+        "description": "Configureer je Nederlandse overheidsbekendmakingen. Standaard wordt je Home Assistant locatie gebruikt, of kies een eigen locatie. Bekendmakingen verschijnen als oranje balletjes op de kaart en als tekstsensor.",
         "data": {
-          "municipality": "Gemeente",
           "manual_coordinates": "Eigen locatie instellen",
           "latitude": "Breedtegraad",
           "longitude": "Lengtegraad",
@@ -15,7 +14,6 @@
           "debug": "Debug-modus"
         },
         "data_description": {
-          "municipality": "Voer de naam van jouw gemeente in (bijvoorbeeld: Amsterdam, Rotterdam, Utrecht). Alleen verplicht als 'Eigen locatie instellen' NIET is aangevinkt.",
           "manual_coordinates": "Schakel in om een eigen locatie te gebruiken in plaats van je Home Assistant locatie.",
           "latitude": "Breedtegraad van de locatie (-90 tot 90).",
           "longitude": "Lengtegraad van de locatie (-180 tot 180).",
@@ -27,7 +25,6 @@
     },
     "error": {
       "required": "Dit veld is verplicht",
-      "municipality": "Gemeente is verplicht als 'Eigen locatie instellen' niet is aangevinkt",
       "invalid_coordinates": "Verkeerde coördinaten. Controleer breedtegraad (-90 tot 90) en lengtegraad (-180 tot 180).",
       "cannot_connect": "Geen verbinding met Overheid.nl mogelijk",
       "unknown": "Er ging iets mis"

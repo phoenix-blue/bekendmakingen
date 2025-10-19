@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 DOMAIN = "overheid_bekendmakingen"
 NAME = "Overheid Bekendmakingen"
-VERSION = "2.0.9"  # Improve municipality field validation UX
+VERSION = "2.1.0"  # Simplified config: Remove municipality field, use coordinates only
 
 # Configuratie sleutels
 CONF_LATITUDE = "latitude"

@@ -36,16 +36,8 @@ class OverheidBekendmakingenConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
         errors: dict[str, str] = {}
 
         if user_input is not None:
-            # Validate municipality - only required if NOT using manual coordinates
-            manual_coords = user_input.get("manual_coordinates", False)
-            municipality = user_input.get("municipality", "").strip()
-            # Ignore placeholder text
-            if municipality.startswith("Bijvoorbeeld:"):
-                municipality = ""
-            if not manual_coords and not municipality:
-                errors["municipality"] = "municipality"
-                
             # Validate coordinates if manual input is checked
+            manual_coords = user_input.get("manual_coordinates", False)
             if manual_coords:
                 if not user_input.get("latitude") or not user_input.get("longitude"):
                     errors["base"] = "invalid_coordinates"
@@ -60,10 +52,6 @@ class OverheidBekendmakingenConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
                         errors["base"] = "invalid_coordinates"
 
             if not errors:
-                # Clean placeholder text from municipality
-                if user_input.get("municipality", "").startswith("Bijvoorbeeld:"):
-                    user_input["municipality"] = ""
-                    
                 return self.async_create_entry(
                     title=NAME, 
                     data=user_input
@@ -76,7 +64,6 @@ class OverheidBekendmakingenConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema({
-                vol.Optional("municipality", default="Bijvoorbeeld: Amsterdam"): cv.string,
                 vol.Optional("manual_coordinates", default=False): cv.boolean,
                 vol.Optional("latitude", default=latitude): cv.latitude,
                 vol.Optional("longitude", default=longitude): cv.longitude,

@@ -463,7 +463,6 @@ async def async_setup_entry(hass, entry, async_add_entities):
     # Get configuration
     config = entry.data
     name = config.get("name", "Overheid Bekendmakingen")
-    municipality = config.get("municipality", DEFAULT_MUNICIPALITY)
     latitude = config.get("latitude")
     longitude = config.get("longitude")
     radius = config.get("radius", 5000)
@@ -478,7 +477,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
         longitude=longitude,
         range_km=radius,
         interval_hours=update_interval,
-        municipality=municipality,
+        municipality=DEFAULT_MUNICIPALITY,  # Always use default municipality
         unique_id=entry.entry_id,
         debug=debug
     )
