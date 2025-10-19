@@ -90,15 +90,8 @@ Deze integratie is geïnspireerd door het uitstekende werk van [@basgroot](https
 ## Versie 2.1.3 - Nieuwe Features
 
 ✅ **Locatie filtering**: Accurate radius-gebaseerde filtering geïmplementeerd  
-✅ **Privacy filtering**: AVG-gevoelige publicatietypen worden uitgefilterd  
+✅ **Privacy filtering**: Bepaalde publicatietypen worden automatisch uitgefilterd  
 ✅ **Verbeterde coordinaat verwerking**: Gebaseerd op basgroot referentie-implementatie  
-
-### Uitgefilterde publicatietypen (voor privacy):
-- Bekendmakingen Echtscheiding Of Ontbinding
-- Bekendmakingen Faillissement, Surseance Van Betaling Of Sc
-- Bekendmakingen Gerechtelijke Oproeping Belanghebbenden
-- Bekendmakingen Ondercuratelestelling Of Handlichting
-- Bekendmakingen Overige Overheidsinformatie
 
 ## TODO / Roadmap
 
