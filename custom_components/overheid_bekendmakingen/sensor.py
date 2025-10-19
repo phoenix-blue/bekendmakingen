@@ -15,7 +15,6 @@ from .const import (
     MAXIMUM_RECORDS,
     START_RECORD,
     DEFAULT_MUNICIPALITY,
-    MUNICIPALITY_COORDINATES,
     EXCLUDED_PUBLICATION_TYPES,
     get_start_date,
     build_query,
@@ -39,8 +38,9 @@ class BekendmakingenSensor(Entity):
         """Initialize the sensor."""
         self._name = name
         self._state = None
-        self._latitude = float(latitude) if latitude else MUNICIPALITY_COORDINATES["lat"]
-        self._longitude = float(longitude) if longitude else MUNICIPALITY_COORDINATES["lng"]
+        # Always use Home Assistant coordinates if provided coordinates are missing
+        self._latitude = float(latitude) if latitude else float(hass.config.latitude)
+        self._longitude = float(longitude) if longitude else float(hass.config.longitude)
         self._range_km = float(range_km) / 1000.0
         self._interval_hours = float(interval_hours)
         self._data = []

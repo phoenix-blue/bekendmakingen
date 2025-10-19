@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 DOMAIN = "overheid_bekendmakingen"
 NAME = "Overheid Bekendmakingen"
-VERSION = "2.1.3"  # Add filtering for unwanted publication types and improve region filtering
+VERSION = "2.1.4"  # Always use Home Assistant location, remove hardcoded coordinates
 
 # Ongewenste publicatie types (AVG gerelateerd)
 EXCLUDED_PUBLICATION_TYPES = [
@@ -36,12 +36,8 @@ API_BASE_URL = "https://repository.overheid.nl/sru"
 MAXIMUM_RECORDS = 1000
 START_RECORD = 1
 
-# Standaard gemeente configuratie (wordt overschreven door gebruiker)
+# Standaard gemeente configuratie
 DEFAULT_MUNICIPALITY = "Nederland"
-MUNICIPALITY_COORDINATES = {
-    "lat": 52.3676,  # Centrum Nederland
-    "lng": 4.9041
-}
 
 # Date configuration - zoek 6 weken terug voor recente bekendmakingen
 LOOKBACK_WEEKS = 6
