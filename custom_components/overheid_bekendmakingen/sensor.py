@@ -16,6 +16,7 @@ from .const import (
     START_RECORD,
     DEFAULT_MUNICIPALITY,
     MUNICIPALITY_COORDINATES,
+    EXCLUDED_PUBLICATION_TYPES,
     get_start_date,
     build_query,
     ATTR_LATEST_TITLE,
@@ -241,6 +242,48 @@ class BekendmakingenSensor(Entity):
             
         return publications
 
+    def _calculate_distance(self, lat1, lon1, lat2, lon2):
+        """Calculate distance between two coordinates in kilometers using Haversine formula."""
+        import math
+        
+        # Convert to radians
+        lat1, lon1, lat2, lon2 = map(math.radians, [lat1, lon1, lat2, lon2])
+        
+        # Haversine formula
+        dlat = lat2 - lat1
+        dlon = lon2 - lon1
+        a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+        c = 2 * math.asin(math.sqrt(a))
+        
+        # Earth's radius in kilometers
+        r = 6371
+        return c * r
+
+    def _is_within_radius(self, locations):
+        """Check if any of the publication locations is within the configured radius."""
+        if not locations:
+            return False
+            
+        for location_str in locations:
+            try:
+                # Parse "lat lon" format
+                parts = location_str.strip().split()
+                if len(parts) >= 2:
+                    pub_lat = float(parts[0])
+                    pub_lon = float(parts[1])
+                    
+                    distance = self._calculate_distance(
+                        self._latitude, self._longitude,
+                        pub_lat, pub_lon
+                    )
+                    
+                    if distance <= self._range_km:
+                        return True
+            except (ValueError, IndexError):
+                continue
+                
+        return False
+
     def _extract_publication_data(self, record):
         """Extract publication data from a record."""
         try:
@@ -265,6 +308,19 @@ class BekendmakingenSensor(Entity):
             # Get type
             type_info = self._get_type(tp_meta, owms_kern)
             
+            # Filter out unwanted publication types
+            if type_info in EXCLUDED_PUBLICATION_TYPES:
+                _LOGGER.debug(f"Filtering out excluded publication type: {type_info}")
+                return None
+            
+            # Extract location data first to check radius
+            locations = self._extract_locations(tp_meta)
+            
+            # Check if publication is within radius
+            if not self._is_within_radius(locations):
+                _LOGGER.debug(f"Publication outside radius: {title}")
+                return None
+            
             # Get date
             date_str = tp_meta.get("datumTijdstipWijzigingWork", "")
             if date_str:
@@ -282,9 +338,6 @@ class BekendmakingenSensor(Entity):
             
             # Create API URL (if possible)
             api_url = self._get_api_url(preferred_url)
-            
-            # Extract location data
-            locations = self._extract_locations(tp_meta)
             
             publication = {
                 "title": title,

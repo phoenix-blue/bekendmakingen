@@ -3,7 +3,16 @@ from datetime import datetime, timedelta
 
 DOMAIN = "overheid_bekendmakingen"
 NAME = "Overheid Bekendmakingen"
-VERSION = "2.1.2"  # Force config flow update - clean coordinate-only setup
+VERSION = "2.1.3"  # Add filtering for unwanted publication types and improve region filtering
+
+# Ongewenste publicatie types (AVG gerelateerd)
+EXCLUDED_PUBLICATION_TYPES = [
+    "Bekendmakingen Echtscheiding Of Ontbinding",
+    "Bekendmakingen Faillissement, Surseance Van Betaling Of Sc",
+    "Bekendmakingen Gerechtelijke Oproeping Belanghebbenden", 
+    "Bekendmakingen Ondercuratelestelling Of Handlichting",
+    "Bekendmakingen Overige Overheidsinformatie",
+]
 
 # Configuratie sleutels
 CONF_LATITUDE = "latitude"
