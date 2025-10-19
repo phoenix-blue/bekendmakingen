@@ -24,7 +24,6 @@
       }
     },
     "error": {
-      "required": "Dit veld is verplicht",
       "invalid_coordinates": "Verkeerde coördinaten. Controleer breedtegraad (-90 tot 90) en lengtegraad (-180 tot 180).",
       "cannot_connect": "Geen verbinding met Overheid.nl mogelijk",
       "unknown": "Er ging iets mis"
