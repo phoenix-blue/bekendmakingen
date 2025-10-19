@@ -38,10 +38,10 @@ De bekendmakingen worden weergegeven als sensors in Home Assistant met locatie-i
 
 Bij het instellen van de integratie kun je opgeven:
 
-- **Gemeente**: De naam van jouw gemeente (verplicht)
 - **Locatie**: GPS-coördinaten (gebruikt Home Assistant locatie standaard)
 - **Zoekradius**: Afstand in meters rond de locatie (1000-50000m)
 - **Update interval**: Hoe vaak er nieuwe data wordt opgehaald (1-24 uur)
+- **Debug**: Voor probleemoplossing en uitgebreide logging
 
 ## Wat krijg je?
 
@@ -87,7 +87,6 @@ Deze integratie is geïnspireerd door het uitstekende werk van [@basgroot](https
 
 ## TODO / Roadmap
 
-- [ ] Keuze Home Assistant locatie of handmatige locatie verbeteren
 - [ ] Icoontjes maps toewijzen
 - [ ] Uitgebreidere filtering opties toevoegen
 - [ ] Performance optimalisaties voor grote datasets

@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 DOMAIN = "overheid_bekendmakingen"
 NAME = "Overheid Bekendmakingen"
-VERSION = "2.1.1"  # Remove manual_coordinates field - just show lat/lng directly
+VERSION = "2.1.2"  # Force config flow update - clean coordinate-only setup
 
 # Configuratie sleutels
 CONF_LATITUDE = "latitude"
