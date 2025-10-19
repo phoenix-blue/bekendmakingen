@@ -72,6 +72,8 @@ Bij het instellen van de integratie kun je opgeven:
 - **Nederlandse gemeenten**: Werkt met alle Nederlandse gemeenten
 - **Real-time data**: Gebruikt officiële overheids-API
 - **Gebruiksvriendelijk**: Eenvoudige configuratie via UI
+- **Locatie filtering**: Radius-gebaseerde filtering met Haversine-formule
+- **Privacy-vriendelijk**: Filtert automatisch AVG-gevoelige publicaties uit
 
 ## API Bron
 
@@ -85,10 +87,24 @@ epository.overheid.nl
 
 Deze integratie is geïnspireerd door het uitstekende werk van [@basgroot](https://github.com/basgroot/bekendmakingen). Veel dank voor de inspiratie en referentie-implementatie.
 
+## Versie 2.1.3 - Nieuwe Features
+
+✅ **Locatie filtering**: Accurate radius-gebaseerde filtering geïmplementeerd  
+✅ **Privacy filtering**: AVG-gevoelige publicatietypen worden uitgefilterd  
+✅ **Verbeterde coordinaat verwerking**: Gebaseerd op basgroot referentie-implementatie  
+
+### Uitgefilterde publicatietypen (voor privacy):
+- Bekendmakingen Echtscheiding Of Ontbinding
+- Bekendmakingen Faillissement, Surseance Van Betaling Of Sc
+- Bekendmakingen Gerechtelijke Oproeping Belanghebbenden
+- Bekendmakingen Ondercuratelestelling Of Handlichting
+- Bekendmakingen Overige Overheidsinformatie
+
 ## TODO / Roadmap
 
 - [ ] Icoontjes maps toewijzen
-- [ ] Uitgebreidere filtering opties toevoegen
+- [x] Locatie filtering verbeteren (✅ v2.1.3)
+- [x] Privacy-gevoelige publicaties filteren (✅ v2.1.3)
 - [ ] Performance optimalisaties voor grote datasets
 
 ## Ondersteuning
