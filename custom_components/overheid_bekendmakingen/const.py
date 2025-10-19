@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 DOMAIN = "overheid_bekendmakingen"
 NAME = "Overheid Bekendmakingen"
-VERSION = "2.1.4"  # Always use Home Assistant location, remove hardcoded coordinates
+VERSION = "2.1.5"  # Fix missing MUNICIPALITY_COORDINATES import in geo_location
 
 # Ongewenste publicatie types (AVG gerelateerd)
 EXCLUDED_PUBLICATION_TYPES = [

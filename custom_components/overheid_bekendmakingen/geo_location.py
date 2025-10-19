@@ -9,7 +9,6 @@ from homeassistant.util import slugify
 from .const import (
     DOMAIN,
     DEFAULT_MUNICIPALITY,
-    MUNICIPALITY_COORDINATES,
     get_icon_for_type,
     MAP_COLOR,
 )
@@ -102,8 +101,8 @@ class BekendmakingenGeoManager:
             # Only show announcements with location data
             locations = announcement.get("location", [])
             if not locations:
-                # Use municipality center as fallback
-                locations = [f"{MUNICIPALITY_COORDINATES['lat']} {MUNICIPALITY_COORDINATES['lng']}"]
+                # Use Home Assistant location as fallback
+                locations = [f"{self.hass.config.latitude} {self.hass.config.longitude}"]
                 
             for i, location_str in enumerate(locations):
                 try:
@@ -119,10 +118,10 @@ class BekendmakingenGeoManager:
                         elif 50 <= coord2 <= 54 and 3 <= coord1 <= 8:
                             lat, lng = coord2, coord1
                         else:
-                            # Use default coordinates if outside Netherlands
-                            _LOGGER.warning(f"Invalid coordinates {location_str}, using default")
-                            lat = MUNICIPALITY_COORDINATES["lat"]
-                            lng = MUNICIPALITY_COORDINATES["lng"]
+                            # Use Home Assistant location if outside Netherlands
+                            _LOGGER.warning(f"Invalid coordinates {location_str}, using HA location")
+                            lat = float(self.hass.config.latitude)
+                            lng = float(self.hass.config.longitude)
                     else:
                         continue
                     
