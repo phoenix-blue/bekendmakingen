@@ -43,7 +43,7 @@ class OverheidBekendmakingenConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
             if municipality.startswith("Bijvoorbeeld:"):
                 municipality = ""
             if not manual_coords and not municipality:
-                errors["municipality"] = "required"
+                errors["municipality"] = "municipality"
                 
             # Validate coordinates if manual input is checked
             if manual_coords:

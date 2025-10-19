@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 DOMAIN = "overheid_bekendmakingen"
 NAME = "Overheid Bekendmakingen"
-VERSION = "2.0.8"  # Proper HACS/HA directory structure
+VERSION = "2.0.9"  # Improve municipality field validation UX
 
 # Configuratie sleutels
 CONF_LATITUDE = "latitude"

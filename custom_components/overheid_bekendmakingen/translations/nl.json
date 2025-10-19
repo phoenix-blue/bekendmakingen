@@ -15,7 +15,7 @@
           "debug": "Debug-modus"
         },
         "data_description": {
-          "municipality": "Voer de naam van jouw gemeente in (bijvoorbeeld: Amsterdam, Rotterdam, Utrecht). Alleen verplicht als je geen eigen locatie instelt.",
+          "municipality": "Voer de naam van jouw gemeente in (bijvoorbeeld: Amsterdam, Rotterdam, Utrecht). Alleen verplicht als 'Eigen locatie instellen' NIET is aangevinkt.",
           "manual_coordinates": "Schakel in om een eigen locatie te gebruiken in plaats van je Home Assistant locatie.",
           "latitude": "Breedtegraad van de locatie (-90 tot 90).",
           "longitude": "Lengtegraad van de locatie (-180 tot 180).",
@@ -27,6 +27,7 @@
     },
     "error": {
       "required": "Dit veld is verplicht",
+      "municipality": "Gemeente is verplicht als 'Eigen locatie instellen' niet is aangevinkt",
       "invalid_coordinates": "Verkeerde coördinaten. Controleer breedtegraad (-90 tot 90) en lengtegraad (-180 tot 180).",
       "cannot_connect": "Geen verbinding met Overheid.nl mogelijk",
       "unknown": "Er ging iets mis"
