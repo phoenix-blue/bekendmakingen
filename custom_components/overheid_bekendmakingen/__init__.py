@@ -45,35 +45,45 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def _register_services(hass: HomeAssistant):
     """Register services voor handmatige updates en configuratie."""
     
-    async def handle_manual_update(call):
-        """Handle manual update service call."""
-        entity_id = call.data.get("entity_id")
-        force = call.data.get("force", False)
+    try:
+        async def handle_manual_update(call):
+            """Handle manual update service call."""
+            entity_id = call.data.get("entity_id")
+            force = call.data.get("force", False)
+            
+            _LOGGER.info(f"Manual update service called for {entity_id}, force={force}")
+            
+            # Vuur een event dat de sensor kan oppikken
+            hass.bus.async_fire("overheid_bekendmakingen_manual_update", {
+                "entity_id": entity_id,
+                "force": force
+            })
+            
+        async def handle_refresh_all(call):
+            """Handle refresh all sensors service call."""
+            clear_cache = call.data.get("clear_cache", False)
+            
+            _LOGGER.info(f"Refresh all service called, clear_cache={clear_cache}")
+            
+            # Vuur een event voor alle sensors
+            hass.bus.async_fire("overheid_bekendmakingen_refresh_all", {
+                "clear_cache": clear_cache
+            })
         
-        _LOGGER.info(f"Manual update service called for {entity_id}, force={force}")
+        # Controleer of services al geregistreerd zijn
+        if not hass.services.has_service(DOMAIN, "manual_update"):
+            hass.services.async_register(DOMAIN, "manual_update", handle_manual_update)
+            _LOGGER.debug("Service 'manual_update' geregistreerd")
         
-        # Vuur een event dat de sensor kan oppikken
-        hass.bus.async_fire("overheid_bekendmakingen_manual_update", {
-            "entity_id": entity_id,
-            "force": force
-        })
+        if not hass.services.has_service(DOMAIN, "refresh_all"):
+            hass.services.async_register(DOMAIN, "refresh_all", handle_refresh_all)
+            _LOGGER.debug("Service 'refresh_all' geregistreerd")
         
-    async def handle_refresh_all(call):
-        """Handle refresh all sensors service call."""
-        clear_cache = call.data.get("clear_cache", False)
+        _LOGGER.info("Overheid Bekendmakingen 2.0 services succesvol geregistreerd")
         
-        _LOGGER.info(f"Refresh all service called, clear_cache={clear_cache}")
-        
-        # Vuur een event voor alle sensors
-        hass.bus.async_fire("overheid_bekendmakingen_refresh_all", {
-            "clear_cache": clear_cache
-        })
-    
-    # Registreer de services
-    hass.services.async_register(DOMAIN, "manual_update", handle_manual_update)
-    hass.services.async_register(DOMAIN, "refresh_all", handle_refresh_all)
-    
-    _LOGGER.info("Overheid Bekendmakingen 2.0 services geregistreerd")
+    except Exception as e:
+        _LOGGER.error(f"Fout bij registreren services: {e}")
+        raise
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""

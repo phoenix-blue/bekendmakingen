@@ -1,5 +1,6 @@
 """Geo Location platform voor Overheid Bekendmakingen - Kaartweergave."""
 import logging
+import asyncio
 from homeassistant.components.geo_location import GeolocationEvent
 from homeassistant.const import ATTR_LATITUDE, ATTR_LONGITUDE
 from homeassistant.helpers.event import async_track_state_change_event
@@ -21,35 +22,47 @@ async def async_setup_entry(hass, entry, async_add_entities):
     
     # Wait for sensor to be set up first
     import asyncio
-    max_wait = 30  # seconds
+    max_wait = 60  # seconds - verhoogd voor meer stabiliteit
     waited = 0
     
     while waited < max_wait:
         if (DOMAIN in hass.data and entry.entry_id in hass.data[DOMAIN] and 
             'main_sensor' in hass.data[DOMAIN][entry.entry_id]):
-            break
-        await asyncio.sleep(1)
-        waited += 1
+            sensor_data = hass.data[DOMAIN][entry.entry_id]
+            main_sensor = sensor_data.get('main_sensor')
+            
+            # Controleer of main_sensor volledig geïnitialiseerd is
+            if (main_sensor and hasattr(main_sensor, 'entity_id') and 
+                hasattr(main_sensor, '_name') and main_sensor._name):
+                break
+                
+        await asyncio.sleep(2)  # Wacht iets langer tussen checks
+        waited += 2
     
     # Get sensor data 
     if DOMAIN in hass.data and entry.entry_id in hass.data[DOMAIN]:
         sensor_data = hass.data[DOMAIN][entry.entry_id]
         main_sensor = sensor_data.get('main_sensor')
         
-        if main_sensor and hasattr(main_sensor, 'entity_id') and main_sensor.entity_id:
+        if main_sensor and hasattr(main_sensor, 'entity_id'):
+            _LOGGER.info(f"Main sensor gevonden voor geo location: {getattr(main_sensor, '_name', 'Unknown')}")
+            
             # Create geo location manager
             manager = BekendmakingenGeoManager(hass, entry, async_add_entities, main_sensor)
             await manager.async_start()
             
             # Store manager for cleanup
             hass.data[DOMAIN][entry.entry_id]['geo_manager'] = manager
-            _LOGGER.info("Geo location manager gestart")
+            _LOGGER.info("Geo location manager succesvol gestart")
+            return True
         else:
-            _LOGGER.warning(f"Geen main sensor gevonden voor geo location setup. main_sensor: {main_sensor}")
+            _LOGGER.error(f"Main sensor niet geldig voor geo location setup. main_sensor: {main_sensor}")
             if main_sensor:
-                _LOGGER.warning(f"main_sensor attributes: entity_id={getattr(main_sensor, 'entity_id', 'MISSING')}")
+                _LOGGER.error(f"main_sensor attributes: entity_id={getattr(main_sensor, 'entity_id', None)}, name={getattr(main_sensor, '_name', None)}")
+            return False
     else:
-        _LOGGER.warning("Sensor data niet beschikbaar na wachten")
+        _LOGGER.error("Timeout: Sensor data niet beschikbaar na 60 seconden wachten")
+        return False
 
 class BekendmakingenGeoManager:
     """Manager for geo location entities."""
@@ -65,15 +78,34 @@ class BekendmakingenGeoManager:
         
     async def async_start(self):
         """Start monitoring the main sensor."""
-        # Track state changes of the main sensor
-        self._unsub_state_change = async_track_state_change_event(
-            self._hass, 
-            [self._main_sensor.entity_id],
-            self._sensor_state_changed
-        )
-        
-        # Initial update
-        await self._update_geo_entities()
+        try:
+            # Controleer of main_sensor een entity_id heeft
+            if not hasattr(self._main_sensor, 'entity_id') or not self._main_sensor.entity_id:
+                _LOGGER.warning("Main sensor heeft nog geen entity_id, wacht op initialisatie...")
+                # Probeer een paar keer te wachten tot entity_id beschikbaar is
+                for i in range(10):
+                    await asyncio.sleep(1)
+                    if hasattr(self._main_sensor, 'entity_id') and self._main_sensor.entity_id:
+                        break
+                else:
+                    _LOGGER.error("Main sensor entity_id niet beschikbaar na wachten")
+                    return
+            
+            _LOGGER.info(f"Starting geo location monitoring voor entity: {self._main_sensor.entity_id}")
+            
+            # Track state changes of the main sensor
+            self._unsub_state_change = async_track_state_change_event(
+                self._hass, 
+                [self._main_sensor.entity_id],
+                self._sensor_state_changed
+            )
+            
+            # Initial update
+            await self._update_geo_entities()
+            
+        except Exception as e:
+            _LOGGER.error(f"Fout bij starten geo location manager: {e}")
+            raise
         
     async def async_stop(self):
         """Stop monitoring and cleanup."""

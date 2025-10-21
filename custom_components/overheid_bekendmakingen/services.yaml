@@ -1,0 +1,64 @@
+# Services voor Overheid Bekendmakingen - Versie 2.0
+manual_update:
+  name: Handmatige Update
+  description: Voer direct een update uit van de Overheid Bekendmakingen sensor
+  target:
+    entity:
+      domain: sensor
+      integration: overheid_bekendmakingen
+  fields:
+    force:
+      name: Forceer Update  
+      description: Forceer een update zelfs als de laatste update recent was
+      default: false
+      selector:
+        boolean:
+
+refresh_all:
+  name: Ververs Alle Sensors
+  description: Ververs alle Overheid Bekendmakingen sensors in één keer
+  fields:
+    clear_cache:
+      name: Leeg Cache
+      description: Leeg de cache en haal alle data opnieuw op
+      default: false
+      selector:
+        boolean:
+        
+set_range:
+  name: Zoekbereik Aanpassen
+  description: Wijzig het zoekbereik voor de bekendmakingen (1-50 km)
+  target:
+    entity:
+      domain: sensor
+      integration: overheid_bekendmakingen
+  fields:
+    range_km:
+      name: Bereik in kilometers
+      description: Het nieuwe zoekbereik in kilometers
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 50
+          step: 1
+          unit_of_measurement: "km"
+
+set_interval:
+  name: Update Interval Aanpassen
+  description: Wijzig de automatische update interval (1-24 uur)
+  target:
+    entity:
+      domain: sensor
+      integration: overheid_bekendmakingen
+  fields:
+    interval_hours:
+      name: Interval in uren
+      description: De nieuwe update interval in uren
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 24
+          step: 1
+          unit_of_measurement: "h"

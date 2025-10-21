@@ -551,14 +551,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
         TypeFilterSensor(main_sensor)
     ]
     
-    # Store async_add_entities for later use
-    main_sensor._async_add_entities = async_add_entities
-    
-    # Add all sensors
-    all_sensors = [main_sensor] + additional_sensors
-    async_add_entities(all_sensors, update_before_add=True)
-    
-    # Store sensor reference for other platforms
+    # Store sensor reference for other platforms BEFORE adding entities
     if DOMAIN not in hass.data:
         hass.data[DOMAIN] = {}
     if entry.entry_id not in hass.data[DOMAIN]:
@@ -569,4 +562,18 @@ async def async_setup_entry(hass, entry, async_add_entities):
     entry_dict['main_sensor'] = main_sensor
     entry_dict['config'] = dict(config)
     
+    _LOGGER.info(f"Main sensor opgeslagen in hass.data voor entry {entry.entry_id}")
+    
+    # Store async_add_entities for later use
+    main_sensor._async_add_entities = async_add_entities
+    
+    # Add all sensors
+    additional_sensors = [
+        HistorySensor(main_sensor),
+        TypeFilterSensor(main_sensor)
+    ]
+    all_sensors = [main_sensor] + additional_sensors
+    async_add_entities(all_sensors, update_before_add=True)
+    
     _LOGGER.info(f"Sensor {name} toegevoegd met unieke ID: {entry.entry_id}")
+    _LOGGER.debug(f"Main sensor entity_id: {getattr(main_sensor, 'entity_id', 'Not set yet')}")
