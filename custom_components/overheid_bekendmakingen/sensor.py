@@ -505,6 +505,16 @@ class BekendmakingenSensor(Entity):
         _LOGGER.info(f"Manual update triggered for {self._name}")
         await self.async_update()
 
+    async def _handle_manual_update(self, event):
+        """Handle manual update events."""
+        _LOGGER.info(f"Handling manual update event for {self._name}")
+        await self.async_manual_update()
+
+    async def _handle_refresh_all(self, event):
+        """Handle refresh all events."""
+        _LOGGER.info(f"Handling refresh all event for {self._name}")
+        await self.async_manual_update()
+
 
 async def async_setup_entry(hass, entry, async_add_entities):
     """Set up sensor entities from config entry."""

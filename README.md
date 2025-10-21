@@ -91,7 +91,7 @@ Deze integratie is geïnspireerd door het uitstekende werk van [@basgroot](https
 
 ✅ **Locatie filtering**: Accurate radius-gebaseerde filtering geïmplementeerd  
 ✅ **Privacy filtering**: Bepaalde publicatietypen worden automatisch uitgefilterd  
-✅ **Verbeterde coordinaat verwerking**: Gebaseerd op basgroot referentie-implementatie  
+✅ **Verbeterde coordinaat verwerking**: Gebaseerd op basgroot referentie-implementatie
 
 ## TODO / Roadmap
 

@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 DOMAIN = "overheid_bekendmakingen"
 NAME = "Overheid Bekendmakingen"
-VERSION = "2.1.5"  # Fix missing MUNICIPALITY_COORDINATES import in geo_location
+VERSION = "2.1.6"  # Fix missing event handler methods in sensor
 
 # Ongewenste publicatie types (AVG gerelateerd)
 EXCLUDED_PUBLICATION_TYPES = [
