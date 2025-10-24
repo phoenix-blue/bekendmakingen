@@ -1,5 +1,6 @@
 """Latest per type sensors with clickable links and GPS coordinates."""
 import logging
+from textwrap import shorten
 from homeassistant.helpers.entity import Entity
 from homeassistant.const import ATTR_LATITUDE, ATTR_LONGITUDE
 
@@ -13,9 +14,10 @@ class LatestByTypeSensor(Entity):
 
     def __init__(self, main_sensor, announcement_type):
         """Initialize the latest by type sensor."""
-        self._main_sensor = main_sensor
-        self._type = announcement_type
-        self._attr_name = f"Laatste {announcement_type.title()}"
+    self._main_sensor = main_sensor
+    self._type = announcement_type
+    type_label = shorten(announcement_type.title(), width=22, placeholder="...")
+    self._attr_name = f"Laatste {type_label}"
         self._attr_unique_id = f"{DOMAIN}_{main_sensor.unique_id}_latest_{announcement_type.replace(' ', '_')}"
         
         # Set icon based on type

@@ -30,7 +30,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     try:
         # Forward the setup to platforms (added geo_location for map display)
         _LOGGER.debug("Forwarding entry setup to platforms.")
+        _LOGGER.error("🚀 ABOUT TO SETUP PLATFORMS: sensor, button, number, geo_location")
         await hass.config_entries.async_forward_entry_setups(entry, ["sensor", "button", "number", "geo_location"])
+        _LOGGER.error("🚀 PLATFORMS SETUP COMPLETED!")
         _LOGGER.debug("Platforms setup completed.")
         
         # Register services voor versie 2.0

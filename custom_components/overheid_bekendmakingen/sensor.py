@@ -52,6 +52,7 @@ class BekendmakingenSensor(Entity):
         self._municipality = municipality if municipality else DEFAULT_MUNICIPALITY
         self._individual_sensors_created = False
         self._async_add_entities = None
+        self._debug_location_logs = 0
 
         # Create update coordinator with the specified interval
         self.coordinator = DataUpdateCoordinator(
@@ -167,7 +168,13 @@ class BekendmakingenSensor(Entity):
         """Fetch data from the API using working implementation."""
         try:
             start_date = get_start_date()
-            query = build_query(self._municipality, start_date)
+            query = build_query(
+                self._municipality,
+                start_date,
+                self._latitude,
+                self._longitude,
+                self._range_km,
+            )
             
             params = {
                 'query': query,
@@ -259,27 +266,59 @@ class BekendmakingenSensor(Entity):
         r = 6371
         return c * r
 
+    def _normalize_coordinates(self, coord1, coord2):
+        """Normaliseer coördinaten zodat altijd (lat, lon) wordt teruggegeven."""
+        # Gewoon WGS84: eerste waarde is breedtegraad
+        if 50 <= coord1 <= 54 and 3 <= coord2 <= 8:
+            return coord1, coord2
+
+        # Omgedraaide volgorde (lon, lat)
+        if 50 <= coord2 <= 54 and 3 <= coord1 <= 8:
+            return coord2, coord1
+
+        # Waarden buiten Nederland -> negeren
+        return None
+
     def _is_within_radius(self, locations):
         """Check if any of the publication locations is within the configured radius."""
         if not locations:
-            return False
+            _LOGGER.debug("Geen locaties beschikbaar; accepteer record binnen radius")
+            return True
             
         for location_str in locations:
             try:
                 # Parse "lat lon" format
                 parts = location_str.strip().split()
                 if len(parts) >= 2:
-                    pub_lat = float(parts[0])
-                    pub_lon = float(parts[1])
+                    coord1 = float(parts[0])
+                    coord2 = float(parts[1])
+
+                    normalized = self._normalize_coordinates(coord1, coord2)
+                    if not normalized:
+                        _LOGGER.debug(
+                            "Onbekende coördinaatcombinatie wordt overgeslagen: %s", location_str
+                        )
+                        continue
+
+                    pub_lat, pub_lon = normalized
                     
                     distance = self._calculate_distance(
                         self._latitude, self._longitude,
                         pub_lat, pub_lon
                     )
+
+                    _LOGGER.debug(
+                        "Afstand tot publicatie %s,%s = %.2f km (max %.2f km)",
+                        pub_lat,
+                        pub_lon,
+                        distance,
+                        self._range_km,
+                    )
                     
                     if distance <= self._range_km:
                         return True
             except (ValueError, IndexError):
+                _LOGGER.debug("Kon coördinaat niet parseren: %s", location_str)
                 continue
                 
         return False
@@ -438,16 +477,33 @@ class BekendmakingenSensor(Entity):
             if not isinstance(gebiedsmarkering, list):
                 gebiedsmarkering = [gebiedsmarkering]
                 
+            if not gebiedsmarkering:
+                _LOGGER.debug("Geen gebiedsmarkering aanwezig in tp_meta")
+            else:
+                _LOGGER.debug(
+                    "Aantal gebiedsmarkeringen gevonden: %d", len(gebiedsmarkering)
+                )
+
             for markering in gebiedsmarkering:
                 if not isinstance(markering, dict):
+                    _LOGGER.debug("Onverwacht type voor markering: %s", type(markering))
                     continue
                     
+                _LOGGER.debug("Markering keys: %s", list(markering.keys()))
+
+                if self._debug_location_logs < 5:
+                    _LOGGER.debug("Markering inhoud voorbeeld: %s", markering)
+                    self._debug_location_logs += 1
+
                 # Check for Punt with locatiepunt (simple coordinate)
                 punt = markering.get("Punt", {})
                 if isinstance(punt, dict) and "locatiepunt" in punt:
                     locatiepunt = punt["locatiepunt"]
                     if isinstance(locatiepunt, str) and " " in locatiepunt:
                         locations.append(locatiepunt)
+                        _LOGGER.debug("Locatie gevonden (Punt): %s", locatiepunt)
+                    else:
+                        _LOGGER.debug("Punt.lokatiepunt had onverwacht type: %s", type(locatiepunt))
                         
                 # Check for Adres with locatiepunt
                 adres = markering.get("Adres", {})
@@ -455,10 +511,16 @@ class BekendmakingenSensor(Entity):
                     locatiepunt = adres["locatiepunt"]
                     if isinstance(locatiepunt, str) and " " in locatiepunt:
                         locations.append(locatiepunt)
+                        _LOGGER.debug("Locatie gevonden (Adres): %s", locatiepunt)
+                    else:
+                        _LOGGER.debug("Adres.locatiepunt had onverwacht type: %s", type(locatiepunt))
                         
         except Exception as e:
             _LOGGER.debug(f"Error extracting locations: {e}")
             
+        if not locations:
+            _LOGGER.debug("Geen bruikbare locaties gevonden in record")
+
         return locations
 
     def _create_individual_sensors(self):
@@ -491,9 +553,8 @@ class BekendmakingenSensor(Entity):
             
             if individual_sensors and self._async_add_entities:
                 self.hass.loop.call_soon_threadsafe(
-                    lambda: self.hass.async_create_task(
-                        self._async_add_entities(individual_sensors, update_before_add=False)
-                    )
+                    self._async_add_entities,
+                    individual_sensors,
                 )
                 self._individual_sensors_created = True
                 _LOGGER.info(f"Created {len(individual_sensors)} individual sensors ({len(type_counts)} type sensors)")

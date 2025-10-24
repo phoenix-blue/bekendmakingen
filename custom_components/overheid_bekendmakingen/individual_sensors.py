@@ -1,5 +1,6 @@
 """Individual sensors for each bekendmaking."""
 import logging
+from textwrap import shorten
 from homeassistant.helpers.entity import Entity
 from homeassistant.const import ATTR_LATITUDE, ATTR_LONGITUDE
 from .const import DOMAIN, get_icon_for_type
@@ -17,19 +18,9 @@ class BekendmakingIndividualSensor(Entity):
         self._attr_available = True
         
         # Create unique ID and name with better formatting
-        title = announcement_data.get('title', 'Onbekend')
-        announcement_type = announcement_data.get('type', 'onbekend')
-        date = announcement_data.get('date', '')
-        
-        # Create a cleaner name
-        if len(title) > 40:
-            short_title = title[:37] + "..."
-        else:
-            short_title = title
-            
-        self._attr_name = f"{announcement_type.title()}: {short_title}"
-        if date:
-            self._attr_name += f" ({date})"
+        title = (announcement_data.get('title') or 'Onbekend').strip()
+    # Create a cleaner name that prioritizes the announcement text in the UI
+    self._attr_name = shorten(title, width=80, placeholder="...")
         self._attr_unique_id = f"{DOMAIN}_{main_sensor.unique_id}_{index}"
         
         _LOGGER.debug(f"Created individual sensor: {self._attr_name}")

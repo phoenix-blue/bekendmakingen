@@ -9,14 +9,14 @@ VERSION = "2.1.6"  # Fix missing event handler methods in sensor
 EXCLUDED_PUBLICATION_TYPES = [
     "Bekendmakingen Echtscheiding Of Ontbinding",
     "Bekendmakingen Faillissement, Surseance Van Betaling Of Sc",
-    "Bekendmakingen Gerechtelijke Oproeping Belanghebbenden", 
+    "Bekendmakingen Gerechtelijke Oproeping Belanghebbenden",
     "Bekendmakingen Ondercuratelestelling Of Handlichting",
     "Bekendmakingen Overige Overheidsinformatie",
 ]
 
 # Configuratie sleutels
 CONF_LATITUDE = "latitude"
-CONF_LONGITUDE = "longitude" 
+CONF_LONGITUDE = "longitude"
 CONF_RADIUS = "radius"
 CONF_MANUAL_COORDINATES = "manual_coordinates"
 CONF_UPDATE_INTERVAL = "update_interval_hours"
@@ -42,17 +42,27 @@ DEFAULT_MUNICIPALITY = "Nederland"
 # Date configuration - zoek 6 weken terug voor recente bekendmakingen
 LOOKBACK_WEEKS = 6
 
+
 def get_start_date():
     """Get start date for queries (6 weeks back)."""
     return (datetime.now() - timedelta(weeks=LOOKBACK_WEEKS)).strftime("%Y-%m-%d")
 
+
 # Query configuratie zoals in werkende implementatie
-def build_query(municipality_name, start_date):
+def build_query(municipality_name, start_date, latitude, longitude, range_km):
     """Build SRU query like working basgroot implementation."""
-    return (f"c.product-area==officielepublicaties AND "
-            f"dt.modified>={start_date} AND "
-            f'dt.creator="{municipality_name}" '
-            f"sortBy dt.modified /sort.descending")
+    filters = [
+        "c.product-area==officielepublicaties",
+        f"dt.modified>={start_date}",
+        f'w.locatiepunt within/etrs89 "{latitude:.6f} {longitude:.6f} {range_km:.3f}"'
+    ]
+
+    if municipality_name and municipality_name != DEFAULT_MUNICIPALITY:
+        filters.append(f'dt.creator="{municipality_name}"')
+
+    query_body = " AND ".join(filters)
+    return f"{query_body} sortBy dt.modified /sort.descending"
+
 
 # Update intervallen
 MIN_TIME_BETWEEN_UPDATES = 1800  # 30 minuten
@@ -64,7 +74,7 @@ ATTR_LATEST_DATE = "laatste_datum"
 ATTR_TOTAL_COUNT = "aantal_bekendmakingen"
 ATTR_ANNOUNCEMENTS = "bekendmakingen"
 ATTR_LATITUDE = "breedtegraad"
-ATTR_LONGITUDE = "lengtegraad"  
+ATTR_LONGITUDE = "lengtegraad"
 ATTR_RADIUS = "radius_meters"
 ATTR_LAST_UPDATE = "laatst_bijgewerkt"
 
@@ -73,13 +83,13 @@ MAP_ZOOM_LEVEL = 13
 MAP_ICON = "mdi:file-document-outline"
 MAP_COLOR = "#ff6600"  # Oranje voor Nederlandse overheid
 
-# Icon mapping based on basgroot implementation + uitgebreid  
+# Icon mapping based on basgroot implementation + uitgebreid
 # Credit: Gebaseerd op https://github.com/basgroot/bekendmakingen
 ICON_MAPPING = {
     "aanvraag": "mdi:file-plus-outline",
-    "vergunning": "mdi:file-certificate-outline", 
+    "vergunning": "mdi:file-certificate-outline",
     "bouwen": "mdi:hammer-wrench",
-    "slopen": "mdi:bulldozer", 
+    "slopen": "mdi:bulldozer",
     "uitweg en inrit": "mdi:road-variant",
     "kappen": "mdi:tree",
     "milieu": "mdi:leaf-circle-outline",
@@ -101,7 +111,7 @@ ICON_MAPPING = {
     # Uitgebreide iconen voor meer bekendmaking types
     "sloop": "mdi:demolish",
     "verbouwing": "mdi:tools",
-    "renovatie": "mdi:wrench-outline", 
+    "renovatie": "mdi:wrench-outline",
     "dakkapel": "mdi:home-roof",
     "schuur": "mdi:barn",
     "garage": "mdi:garage-variant",
@@ -131,36 +141,35 @@ ICON_MAPPING = {
     "appartement": "mdi:home-city-outline",
     "onttrekkingsvergunning": "mdi:home-minus",
     "omzettingsvergunning": "mdi:home-switch",
-    "kamerverhuur": "mdi:home-account", 
+    "kamerverhuur": "mdi:home-account",
     "water": "mdi:water",
     "boot": "mdi:ferry",
-    "default": "mdi:file-document-outline"
+    "default": "mdi:file-document-outline",
 }
+
 
 def get_icon_for_type(title, announcement_type):
     """Get appropriate icon based on announcement type and title with smart detection."""
     title_lower = title.lower() if title else ""
     type_lower = announcement_type.lower() if announcement_type else ""
     combined = f"{title_lower} {type_lower}"
-    
-    # Prioriteit voor specifieke trefwoorden in titel
+
     priority_keywords = {
         "aanvraag": "mdi:file-plus-outline",
-        "verlenging": "mdi:calendar-plus-outline", 
+        "verlenging": "mdi:calendar-plus-outline",
         "intrekking": "mdi:cancel",
         "wijziging": "mdi:pencil-outline",
-        "bezwaar": "mdi:alert-octagon-outline"
+        "bezwaar": "mdi:alert-octagon-outline",
     }
-    
+
     for keyword, icon in priority_keywords.items():
         if keyword in combined:
             return icon
-    
-    # Slimme detectie voor bouwactiviteiten
+
     if any(word in combined for word in ["dakkapel", "dakraam", "dak"]):
         return ICON_MAPPING["dakkapel"]
     if any(word in combined for word in ["garage", "carport"]):
-        return ICON_MAPPING["garage"]  
+        return ICON_MAPPING["garage"]
     if any(word in combined for word in ["uitbouw", "uitbreiding"]):
         return ICON_MAPPING["uitbouw"]
     if any(word in combined for word in ["aanbouw", "bijgebouw"]):
@@ -171,19 +180,17 @@ def get_icon_for_type(title, announcement_type):
         return ICON_MAPPING["zwembad"]
     if any(word in combined for word in ["terras", "pergola", "overkapping"]):
         return ICON_MAPPING["terras"]
-    
-    # Slimme detectie voor bedrijfsactiviteiten  
+
     if any(word in combined for word in ["horeca", "café", "restaurant", "eetcafé"]):
         return ICON_MAPPING["horeca"]
     if any(word in combined for word in ["winkel", "detailhandel", "verkoop"]):
         return ICON_MAPPING["winkel"]
     if any(word in combined for word in ["kantoor", "praktijk", "bureau"]):
         return ICON_MAPPING["kantoor"]
-    
-    # Check exacte matches in ICON_MAPPING
+
     for key, icon in ICON_MAPPING.items():
         if key in type_lower or key in title_lower:
             return icon
-    
+
     return ICON_MAPPING["default"]
 
