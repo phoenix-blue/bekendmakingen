@@ -19,8 +19,8 @@ class BekendmakingIndividualSensor(Entity):
         
         # Create unique ID and name with better formatting
         title = (announcement_data.get('title') or 'Onbekend').strip()
-    # Create a cleaner name that prioritizes the announcement text in the UI
-    self._attr_name = shorten(title, width=80, placeholder="...")
+        # Create a cleaner name that prioritizes the announcement text in the UI
+        self._attr_name = shorten(title, width=80, placeholder="...")
         self._attr_unique_id = f"{DOMAIN}_{main_sensor.unique_id}_{index}"
         
         _LOGGER.debug(f"Created individual sensor: {self._attr_name}")
