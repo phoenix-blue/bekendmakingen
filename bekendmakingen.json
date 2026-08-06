@@ -1,0 +1,12 @@
+{
+  "postcode": "",
+  "house_number": 0,
+  "house_number_addition": "",
+  "radius_km": 5,
+  "poll_interval_minutes": 360,
+  "lookback_days": 42,
+  "max_results": 100,
+  "notifications": true,
+  "geocode_url": "https://api.pdok.nl/bzk/locatieserver/search/v3_1/free",
+  "publications_url": "https://repository.overheid.nl/sru"
+}

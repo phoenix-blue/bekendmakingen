@@ -1,0 +1,7 @@
+module apps.bekendmakingen
+BekendmakingenApp 1.0 BekendmakingenApp.qml
+BekendmakingenTile 1.0 BekendmakingenTile.qml
+BekendmakingenScreen 1.0 BekendmakingenScreen.qml
+BekendmakingenDetail 1.0 BekendmakingenDetail.qml
+BekendmakingenSettings 1.0 BekendmakingenSettings.qml
+BekendmakingenPopup 1.0 BekendmakingenPopup.qml

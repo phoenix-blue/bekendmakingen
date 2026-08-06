@@ -1,0 +1,12 @@
+Version 0.1.4
+- Added a QR code beside each publication detail for opening the official URL.
+- Refined the detail layout, colour accents, labels and spacing.
+- Improved settings input with one field per row and the standard Toon keyboard.
+- Fixed saving and reloading settings.
+
+Version 0.1.3
+- Added notification popups for newly found publications.
+- Added local filtering of privacy-sensitive publication categories.
+
+Version 0.1.0
+- Initial Toon 2 test release.
